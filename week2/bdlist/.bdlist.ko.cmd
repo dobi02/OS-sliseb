@@ -1,0 +1,1 @@
+cmd_/home/dobi/OS_silseb/week2/bdlist/bdlist.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/dobi/OS_silseb/week2/bdlist/bdlist.ko /home/dobi/OS_silseb/week2/bdlist/bdlist.o /home/dobi/OS_silseb/week2/bdlist/bdlist.mod.o;  true

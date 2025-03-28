@@ -1,0 +1,10 @@
+for (int
+for (int
+int argc
+int fd[2];
+int fd
+int fd
+int len;
+int main(void)
+int num_cmds
+int prev_fd

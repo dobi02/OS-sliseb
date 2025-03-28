@@ -1,0 +1,1 @@
+cmd_/home/dobi/OS_silseb/mymodule.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/dobi/OS_silseb/mymodule.ko /home/dobi/OS_silseb/mymodule.o /home/dobi/OS_silseb/mymodule.mod.o;  true

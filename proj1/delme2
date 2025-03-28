@@ -1,0 +1,6 @@
+-rw-r--r-- 1 dobi dobi     0  3월 22 23:14 delme
+-rw-rw-r-- 1 dobi dobi  6224  3월 22 23:11 tsh.o
+-rw-rw-rw- 1 dobi dobi   408  3월 22 14:29 Makefile
+-rw-rw-rw- 1 dobi dobi  8610  3월 22 23:11 tsh.c
+-rwxrwxr-x 1 dobi dobi 13272  3월 22 23:11 tsh
+total 40
