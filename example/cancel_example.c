@@ -14,6 +14,9 @@
 #define N 8
 
 int counter = 0;
+/*
+ * __thread와 _Thread_local은 전역변수를 해당 스레드마다 별도로 가질 수 있게 한다.
+ */
 int global;
 //__thread int global;
 //_Thread_local int global;
@@ -24,11 +27,20 @@ void *foo(void *arg)
     
     global = local = counter++;
     printf("%d--created\n", local);
-    
+    /*
+     * 변수 local과 global 값이 같으면 무한 루프를 돌면서
+     * 혹시 자신이 철회 명령을 받았는지 검사한다. (지연철회 여부 검사)
+     * 만일 받았다면 pthread_testcancel()에서 리턴되지 않고 철회된다.
+     */
     while (local == global)
         pthread_testcancel();
-    
+    /*
+     * 변수 local과 global 값이 같지 않으면 루프를 벗어나서 아래를 실행한다.
+     */
     printf("<%d,%d> %d--finished\n", local, global, local);
+    /*
+     * 스레드를 정상적으로 종료한다.
+     */
     pthread_exit(NULL);
 }
 
@@ -38,14 +50,29 @@ int main(void)
     pthread_t tid[N];
     void *retval;
     
+    /*
+     * N개의 서브 스레드를 생성한다.
+     */
     for (i = 0; i < N; ++i)
         pthread_create(tid+i, NULL, foo, NULL);
+    /*
+     * 0번 서브 스레드를 분리시킨다.
+     * 분리된 스레드는 조인이 불가능하며 조인을 시도하면 오류 값이 리턴된다.
+     */
     pthread_detach(tid[0]);
-
+    /*
+     * 모든 서브 스레드가 실행되도록 메인 스레드는 잠시 멈춘다.
+     */
     sleep(1);
-
+    /*
+     * 모든 서브 스레드를 철회한다.
+     * 스레드가 이미 종료되었다면 철회는 무시된다.
+     */
     for (i = 0; i < N; ++i)
         pthread_cancel(tid[i]);
+    /*
+     * 모든 서브 스레드를 조인하고, 종료 상태를 출력한다.
+     */
     for (i = 0; i < N; ++i) {
         pthread_join(tid[i], &retval);
         if (retval == PTHREAD_CANCELED)
