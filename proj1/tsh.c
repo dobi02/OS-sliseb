@@ -15,6 +15,7 @@
 #include <fcntl.h>
 
 #define MAX_LINE 80             /* 명령어의 최대 길이 */
+#define MAX_CMD 10
 
 /*
  * cmdexec - 명령어를 파싱해서 실행한다.
@@ -25,41 +26,46 @@
  */
 static void cmdexec(char *cmd)
 {
-	// 파이프 처리
+	// 명령어에 파이프(|)가 포함되어 있는지 확인
     if (strchr(cmd, '|')) {
-        char *commands[10];  // 최대 10개 명령어 지원
+        char *commands[MAX_CMD];
         int num_cmds = 0;
 
+        // 파이프 기준으로 명령어 분리
         char *p = cmd;
         while ((commands[num_cmds] = strsep(&p, "|")) != NULL) {
+            // 앞의 공백 문자 제거
             commands[num_cmds] += strspn(commands[num_cmds], " \t");
             if (*commands[num_cmds]) num_cmds++;
         }
 
-        int prev_fd = -1;
+        int prev_fd = -1; // 이전 파이프의 읽기용 파일 디스크립터
         for (int i = 0; i < num_cmds; i++) {
-            int fd[2];
+            int fd[2]; // 현재 파이프의 읽기/쓰기용 파일 디스크립터
             if (i < num_cmds - 1 && pipe(fd) < 0) {
                 perror("pipe");
                 exit(1);
             }
 
-            pid_t pid = fork();
+            pid_t pid = fork(); // 자식 프로세스 생성
             if (pid < 0) {
                 perror("fork");
                 exit(1);
             }
 
-            if (pid == 0) {
+            if (pid == 0) { // 자식 프로세스
+                // 이전 파이프의 읽기 파일 디스크립터를 표준 입력으로 연결
                 if (prev_fd != -1) {
                     dup2(prev_fd, STDIN_FILENO);
                     close(prev_fd);
                 }
+                // 현재 파이프의 쓰기 파일 디스크립터를 표준 출력으로 연결
                 if (i < num_cmds - 1) {
                     close(fd[0]);
                     dup2(fd[1], STDOUT_FILENO);
                     close(fd[1]);
                 }
+                // 현재 명령어를 재귀적으로 실행
                 cmdexec(commands[i]);
                 exit(1);
             }
@@ -71,6 +77,7 @@ static void cmdexec(char *cmd)
             }
         }
 
+        // 모든 자식 프로세스가 종료할 때까지 기다림
         for (int i = 0; i < num_cmds; i++) wait(NULL);
         return;
     }
