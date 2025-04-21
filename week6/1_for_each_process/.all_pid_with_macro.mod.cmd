@@ -1,0 +1,1 @@
+cmd_/home/dobi/OS_silseb/week6/1_for_each_process/all_pid_with_macro.mod := { echo  /home/dobi/OS_silseb/week6/1_for_each_process/all_pid_with_macro.o; echo; } > /home/dobi/OS_silseb/week6/1_for_each_process/all_pid_with_macro.mod

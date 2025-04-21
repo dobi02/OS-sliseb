@@ -1,0 +1,1 @@
+cmd_/home/dobi/OS_silseb/week6/3_list_for_each_entry/traverse.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/dobi/OS_silseb/week6/3_list_for_each_entry/traverse.ko /home/dobi/OS_silseb/week6/3_list_for_each_entry/traverse.o /home/dobi/OS_silseb/week6/3_list_for_each_entry/traverse.mod.o;  true

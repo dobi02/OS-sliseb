@@ -1,0 +1,1 @@
+cmd_/home/dobi/OS_silseb/week6/1_for_each_process/all_pid_with_macro.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/dobi/OS_silseb/week6/1_for_each_process/all_pid_with_macro.ko /home/dobi/OS_silseb/week6/1_for_each_process/all_pid_with_macro.o /home/dobi/OS_silseb/week6/1_for_each_process/all_pid_with_macro.mod.o;  true

@@ -1,0 +1,1 @@
+cmd_/home/dobi/OS_silseb/week6/4_project/list_tasks_dfs.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000  --build-id  -T ./scripts/module-common.lds -o /home/dobi/OS_silseb/week6/4_project/list_tasks_dfs.ko /home/dobi/OS_silseb/week6/4_project/list_tasks_dfs.o /home/dobi/OS_silseb/week6/4_project/list_tasks_dfs.mod.o;  true
